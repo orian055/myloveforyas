@@ -21,41 +21,48 @@ public static class BlehhPage
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        padding: 24px;
+                        height: 100vh;
+                        overflow: hidden;
                     }
-                    .card {
-                        width: min(700px, 100%);
-                        padding: 52px 44px;
-                        border-radius: 36px;
-                        background: rgba(30, 9, 43, 0.9);
-                        border: 1px solid rgba(255,255,255,0.12);
-                        box-shadow: 0 28px 90px rgba(0,0,0,0.35);
-                        text-align: center;
+                    @keyframes rumble {
+                        0%   { transform: translate(0, 0) rotate(0deg); }
+                        10%  { transform: translate(-8px, -6px) rotate(-1deg); }
+                        20%  { transform: translate(8px, 6px) rotate(1deg); }
+                        30%  { transform: translate(-10px, 4px) rotate(0.5deg); }
+                        40%  { transform: translate(10px, -4px) rotate(-0.5deg); }
+                        50%  { transform: translate(-6px, 8px) rotate(1deg); }
+                        60%  { transform: translate(6px, -8px) rotate(-1deg); }
+                        70%  { transform: translate(-8px, 4px) rotate(0.5deg); }
+                        80%  { transform: translate(8px, -4px) rotate(-0.5deg); }
+                        90%  { transform: translate(-4px, 6px) rotate(0deg); }
+                        100% { transform: translate(0, 0) rotate(0deg); }
                     }
-                    h1 {
-                        margin: 0 0 12px;
-                        font-size: clamp(3rem, 6vw, 5rem);
-                        color: #ffb0dd;
-                        text-shadow: 0 16px 40px rgba(138, 28, 86, 0.4);
+                    .rumbling {
+                        animation: rumble 0.5s ease;
                     }
-                    .emoji { font-size: 3.5rem; margin-bottom: 20px; display: block; animation: bounce 1.2s ease-in-out infinite; }
-                    @keyframes bounce {
-                        0%, 100% { transform: translateY(0); }
-                        50% { transform: translateY(-12px); }
+                    .blehhh-btn {
+                        padding: 28px 64px;
+                        font-size: 2.8rem;
+                        font-weight: 800;
+                        border-radius: 999px;
+                        border: 2px solid rgba(255,255,255,0.2);
+                        background: linear-gradient(135deg, rgba(255, 109, 208, 0.25), rgba(255,255,255,0.08));
+                        color: #ffd6ff;
+                        cursor: pointer;
+                        letter-spacing: 0.04em;
+                        box-shadow: 0 20px 60px rgba(207, 53, 135, 0.3);
+                        transition: transform 0.2s ease, box-shadow 0.2s ease;
                     }
-                    p {
-                        font-size: 1.15rem;
-                        line-height: 1.9;
-                        color: rgba(255,210,245,0.94);
-                        margin: 0 0 10px;
-                    }
-                    .highlight {
-                        color: #ffb0dd;
-                        font-weight: 700;
+                    .blehhh-btn:hover {
+                        transform: scale(1.05);
+                        box-shadow: 0 28px 70px rgba(207, 53, 135, 0.45);
                     }
                     .back-btn {
-                        margin-top: 32px;
-                        padding: 14px 26px;
+                        position: fixed;
+                        bottom: 32px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        padding: 12px 24px;
                         border-radius: 999px;
                         border: 1px solid rgba(255,255,255,0.15);
                         background: rgba(255,255,255,0.08);
@@ -66,23 +73,31 @@ public static class BlehhPage
                     }
                     .back-btn:hover {
                         background: rgba(255,255,255,0.14);
-                        transform: translateY(-2px);
+                        transform: translateX(-50%) translateY(-2px);
                     }
                 </style>
             </head>
             <body>
-                <div class="card">
-                    <span class="emoji">🩷</span>
-                    <h1>Blehhh.</h1>
-                    <p>Yeah yeah blehhh.</p>
-                    <p>But also — <span class="highlight">you're the cutest person alive.</span></p>
-                    <p>The way you make that face.</p>
-                    <p>The way you scrunch your nose.</p>
-                    <p>The way you go "blehhh" like a little gremlin.</p>
-                    <p><span class="highlight">I love every single version of you.</span></p>
-                    <p>Even the blehhh one. <span class="highlight">Especially</span> the blehhh one.</p>
-                    <button class="back-btn" onclick="location.href='/Yas'">Back 🩷</button>
-                </div>
+                <button class="blehhh-btn" id="blehhh-btn">blehhh</button>
+                <button class="back-btn" onclick="location.href='/Yas'">Back</button>
+
+                <script>
+                    const btn = document.getElementById('blehhh-btn');
+
+                    btn.addEventListener('click', () => {
+                        // rumble the whole page
+                        document.body.classList.remove('rumbling');
+                        void document.body.offsetWidth; // force reflow so animation restarts
+                        document.body.classList.add('rumbling');
+
+                        // vibrate on mobile
+                        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+
+                        document.body.addEventListener('animationend', () => {
+                            document.body.classList.remove('rumbling');
+                        }, { once: true });
+                    });
+                </script>
             </body>
             </html>
             """, "text/html");

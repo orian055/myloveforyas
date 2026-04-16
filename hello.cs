@@ -92,16 +92,12 @@ public static class HelloPage
             </head>
             <body>
                 <div class="card">
-                    <h1>Hello, You.</h1>
-                    <span class="hearts">🩷 🩷 🩷</span>
-                    <p>Hi. It's me. The person who thinks about you <span class="highlight">constantly.</span></p>
-                    <p>The one who sees your name and smiles like an idiot.</p>
-                    <p>The one who chose you. <span class="highlight">Every single day.</span></p>
-                    <p>I just wanted to say hello.</p>
-                    <p>And also that you are <span class="highlight">everything.</span></p>
-                    <p>That's it. That's the whole message.</p>
-                    <p><span class="highlight">Hello. I love you. Goodnight.</span></p>
-                    <button class="back-btn" onclick="location.href='/Yas'">Back 🩷</button>
+                    <h1>Helloww</h1>
+                    <p>i madee a whole website</p>
+                    <p>just to say <span class="highlight">i love you</span>.</p>
+                    <p>btw youre pretty cute.</p>
+                    <p><span class="highlight">I LOVE YOUUU</span></p>
+                    <button class="back-btn" onclick="location.href='/Yas'">Back</button>
                 </div>
             </body>
             </html>
