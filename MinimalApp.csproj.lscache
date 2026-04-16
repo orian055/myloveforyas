@@ -49,13 +49,13 @@ TemporaryDependencyNodeTargetIdentifier=net8.0
 [sourceFiles]
 fun.cs
 more.cs
+ngu.cs
 noilym.cs
 obj/Debug/net8.0/
  .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
  MinimalApp.AssemblyInfo.cs
  MinimalApp.GlobalUsings.g.cs
 Program.cs
-Properties/reasons.cs
 reasons.cs
 relationship.cs
 
