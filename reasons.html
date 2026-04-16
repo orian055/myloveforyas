@@ -1,0 +1,263 @@
+﻿<html>
+<head>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            color: #f7e7ff;
+            background: linear-gradient(135deg, #30042d 0%, #461362 45%, #a11d7d 100%);
+            overflow-x: hidden;
+        }
+        .page-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        .card {
+            width: min(720px, 100%);
+            padding: 44px 44px 32px;
+            border-radius: 32px;
+            background: rgba(30, 9, 43, 0.88);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.38);
+            text-align: center;
+            color: #ffd0f8;
+        }
+        h1 { margin-top: 0; font-size: clamp(3rem, 5vw, 4.4rem); }
+        p { font-size: 1.1rem; line-height: 1.8; color: rgba(255,210,245,0.94); }
+        .slider-container {
+            position: relative;
+            max-width: 620px;
+            margin: 28px auto 0;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .reason-text {
+            text-align: center;
+            font-size: 1.15rem;
+            color: rgba(255,210,245,0.94);
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .nav-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.08);
+            color: #ffd6ff;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.25s ease;
+        }
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.14);
+            transform: scale(1.08);
+        }
+        .counter { font-size: 0.9rem; color: rgba(255,210,245,0.7); margin-top: 12px; }
+        .back-btn { margin-top: 28px; padding: 14px 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.08); color: #ffd6ff; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="card">
+            <h1>Reasons I Love You</h1>
+            <p>I Say I Love You 10000 Times A Day</p>
+            <p>There Are So Many Reasons</p>
+            <div class="slider-container">
+                <div class="reason-text" id="reasonText">Your laugh brightens every day.</div>
+            </div>
+            <div class="slider-nav">
+                <button class="nav-btn" onclick="previousReason()"><</button>
+                <button class="nav-btn" onclick="nextReason()">></button>
+            </div>
+            <div class="counter" id="counter">1 / 150</div>
+            <button class="back-btn" onclick="location.href='/Yas'">Back</button>
+        </div>
+    </div>
+    <script>
+        const reasons = [
+            "You actually care.",
+            "You make me feel loved.",
+            "Youre soooo coollll.",
+            "your smile is cutee.",
+            "Your very smart.",
+            "Youre humble (even tho you got crazy skills).",
+            "Youre a nice person.",
+            "You are prettyyyyyy.",
+            "Your humor is cool!.",
+            "Your HOT. Like damn.",
+            "You make me cool things!.",
+            "Hugging you feels like heaven.",
+            "You always smell so good!.",
+            "You are very talented.",
+            "Your voice.",
+            "Your eyes are the most beautiful thing ive ever seen.",
+            "Your laugh is cutee.",
+            "You are smol!",
+            "Youre going trough so much and you still smile!.",
+            "Youre addicting.",
+            "You. (Just you.)",
+            "Youre PERFECT.",
+            "You have cool stories!",
+            "You listen to my nonsense.",
+            "You are fun!.",
+            "You taste good!.",
+            "Youre just CUTE!",
+            "You are a good mom to tayra.",
+            "I KNOW HOW TO WRITE TAYRA IN ENGLISH BE PROUD OF ME!.",
+            "You make me want to be better for you.",
+            "You make me happy.",
+            "The way you look at me.",
+            "Youre literally a princess!",
+            "You Have a Beautiful accent (sorry).",
+            "You make me feel like a kid again!.",
+            "That one time you walked into my class and put your hand on my head.",
+            "Your patience and understanding.",
+            "How you celebrate my wins.",
+            "Your uniqueness and individuality.",
+            "The way you make me laugh until my sides hurt.",
+            "Your generosity and big heart.",
+            "How you're always there when I need you.",
+            "Your wisdom beyond your years.",
+            "The way you see me for who I really am.",
+            "Your endless love and devotion.",
+            "How you light a fire in my soul.",
+            "Your ability to make me feel at home.",
+            "The way you comfort me without words.",
+            "Your adventurous spirit.",
+            "How you make ordinary days extraordinary.",
+            "Your ability to love so deeply.",
+            "The way you make my heart skip a beat.",
+            "Your selflessness and kindness.",
+            "How you bring out the best in me.",
+            "Your natural grace and elegance.",
+            "The way you hold my hand.",
+            "Your passion for life itself.",
+            "How you always believe in me.",
+            "Your beautiful mind and thoughts.",
+            "The way you make me feel alive.",
+            "Your ability to forgive and heal.",
+            "How you make me want to chase dreams.",
+            "Your gentle strength.",
+            "The way you say my name.",
+            "Your rare and special kind of love.",
+            "How you make me feel like home.",
+            "Your determination to be better.",
+            "The way your presence calms me.",
+            "Your incredible spirit.",
+            "How you love so fearlessly.",
+            "Your ability to see my potential.",
+            "The way you make me feel cherished.",
+            "Your boundless compassion.",
+            "How you inspire me daily.",
+            "Your strength and vulnerability combined.",
+            "The way you trust me completely.",
+            "Your amazing laugh and smile.",
+            "How you make even sad days better.",
+            "Your depth and complexity.",
+            "The way you challenge my perspective.",
+            "Your loyalty and devotion.",
+            "How you celebrate life with joy.",
+            "Your ability to make me feel special.",
+            "The way you love without limits.",
+            "Your incredible heart.",
+            "How you understand me so well.",
+            "Your natural beauty and grace.",
+            "The way you make forever feel possible.",
+            "Your strength when I'm weak.",
+            "How you always find the silver lining.",
+            "Your ability to make me smile.",
+            "The way you see me as your forever.",
+            "Your amazing personality.",
+            "How you love with your whole being.",
+            "Your strength inspires my strength.",
+            "The way you hold me like you'll never let go.",
+            "Your incredible spirit and soul.",
+            "How you make me feel like I'm home.",
+            "Your beauty in every way.",
+            "The way you love me fiercely.",
+            "Your amazing mind and heart.",
+            "How you make me the luckiest person.",
+            "Your ability to see the good.",
+            "The way you're my person.",
+            "Your strength and softness.",
+            "How you make my heart so full.",
+            "Your incredible worth and value.",
+            "The way you love unconditionally.",
+            "Your amazing spirit.",
+            "How you make life worth living.",
+            "Your depth of character.",
+            "The way you're my everything.",
+            "Your incredible inner light.",
+            "How you make me believe in love.",
+            "Your strength gives me courage.",
+            "The way you're my soulmate.",
+            "Your amazing soul.",
+            "How you make me feel safe.",
+            "Your ability to love so purely.",
+            "The way you're always there.",
+            "Your beautiful existence.",
+            "How you make forever feel right.",
+            "Your strength and grace.",
+            "The way you're my best friend.",
+            "Your incredible heart.",
+            "How you make me feel complete.",
+            "Your love changes everything.",
+            "The way you're perfect for me.",
+            "Your amazing presence.",
+            "How you make my dreams come true.",
+            "Your strength I lean on.",
+            "The way you're my forever love.",
+            "Im NOT telling you yet."
+        ];
+
+        let currentIndex = 0;
+
+        function showReason(index) {
+            const textEl = document.getElementById('reasonText');
+            const counterEl = document.getElementById('counter');
+            
+            textEl.textContent = reasons[index];
+            counterEl.textContent = (index + 1) + ' / ' + reasons.length;
+        }
+
+        function nextReason() {
+            currentIndex = (currentIndex + 1) % reasons.length;
+            showReason(currentIndex);
+        }
+
+        function previousReason() {
+            currentIndex = (currentIndex - 1 + reasons.length) % reasons.length;
+            showReason(currentIndex);
+        }
+
+        showReason(0);
+    </script>
+</body>
+</html>
