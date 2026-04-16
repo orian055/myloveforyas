@@ -223,7 +223,6 @@ app.MapGet("/Yas", () =>
             <div class="hero-card">
                 <h1 class="hero-title" id="wave-title">I Love You Yasmin</h1>
                 <div class="hero-badge">Made By Orian</div>
-                <div class="hero-link"><a href="https://myloveforyasa.netlify.app" target="_blank">myloveforyasa.netlify.app</a></div>
                 <p class="hero-text">You Are The Best! </p>
             </div>
         </div>
