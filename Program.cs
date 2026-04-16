@@ -1,6 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
+app.MapGet("/", (HttpContext ctx) =>
+{
+    ctx.Response.Redirect("/yas");
+    return Task.CompletedTask;
+});
+
                 
 app.UseStaticFiles(new Microsoft.AspNetCore.Builder.StaticFileOptions
 {
