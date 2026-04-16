@@ -251,6 +251,10 @@ app.MapMorePage();
 
 app.MapNguPage();
 
+app.MapBlehhPage();
+
+app.MapHelloPage();
+
 app.MapNoIlymPage();
 var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 app.Run($"http://0.0.0.0:{port}");

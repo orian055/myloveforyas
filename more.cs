@@ -70,8 +70,8 @@ public static class MorePage
                         <div class="button-row">
                             <button class="action-btn" onclick="location.href='/noilym'">NO, I love you more!</button>
                             <button class="action-btn" onclick="location.href='/ngu'">I give up</button>
-                            <button class="action-btn" onclick="alert('BLEHHH')">BLEHHH</button>
-                            <button class="action-btn" onclick="alert('Hello')">Hello</button>
+                            <button class="action-btn" onclick="location.href='/blehhh'">BLEHHH</button>
+                            <button class="action-btn" onclick="location.href='/hello'">Hello</button>
                         </div>
                         <button class="back-btn" onclick="location.href='/Yas'">Back</button>
                     </div>

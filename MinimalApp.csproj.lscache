@@ -47,7 +47,9 @@ TemporaryDependencyNodeTargetIdentifier=net8.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
+blehhh.cs
 fun.cs
+hello.cs
 more.cs
 ngu.cs
 noilym.cs
