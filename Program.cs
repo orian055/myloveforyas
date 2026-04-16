@@ -8,6 +8,9 @@ app.UseStaticFiles(new Microsoft.AspNetCore.Builder.StaticFileOptions
     RequestPath = ""
 });
 
+
+
+
 app.MapGet("/Yas", () =>
 {
     return Results.Content("""
@@ -248,5 +251,6 @@ app.MapFunPage();
 app.MapMorePage();
 
 app.MapNoIlymPage();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+app.Run($"http://0.0.0.0:{port}");
 
-app.Run();
