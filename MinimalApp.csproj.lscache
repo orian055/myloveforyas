@@ -15,19 +15,11 @@ primary
 lastDtbSucceeded
 
 [properties]
-AssemblyName=MinimalApp
-CommandLineArgsForDesignTimeEvaluation=-langversion:14.0 -define:TRACE
-CompilerGeneratedFilesOutputPath=
-MaxSupportedLangVersion=14.0
-ProjectAssetsFile=<PATH>obj/project.assets.json
-RootNamespace=MinimalApp
-RunAnalyzers=
-RunAnalyzersDuringLiveAnalysis=
-SolutionPath=*Undefined*
-TargetFrameworkIdentifier=.NETCoreApp
-TargetPath=<PATH>bin/Debug/net10.0/MinimalApp.dll
-TargetRefPath=<PATH>obj/Debug/net10.0/ref/MinimalApp.dll
-TemporaryDependencyNodeTargetIdentifier=net10.0
+CommandLineArgsForDesignTimeEvaluation=-langversion:12.0 -define:TRACE
+MaxSupportedLangVersion=12.0
+TargetPath=<PATH>bin/Debug/net8.0/MinimalApp.dll
+TargetRefPath=<PATH>obj/Debug/net8.0/ref/MinimalApp.dll
+TemporaryDependencyNodeTargetIdentifier=net8.0
 
 [commandLineArguments]
 /noconfig
@@ -37,31 +29,29 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /fullpaths
 /nostdlib+
 /errorreport:prompt
-/warn:10
-/define:TRACE;DEBUG;NET;NET10_0;NETCOREAPP;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NETCOREAPP1_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NETCOREAPP2_2_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER
+/warn:8
+/define:TRACE;DEBUG;NET;NET8_0;NETCOREAPP;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NETCOREAPP1_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NETCOREAPP2_2_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER
 /highentropyva+
 /nullable:enable
-/features:"InterceptorsNamespaces=;Microsoft.Extensions.Validation.Generated"
 /debug+
 /debug:portable
 /filealign:512
 /optimize-
-/out:obj\Debug\net10.0\MinimalApp.dll
-/refout:obj\Debug\net10.0\refint\MinimalApp.dll
+/out:obj\Debug\net8.0\MinimalApp.dll
+/refout:obj\Debug\net8.0\refint\MinimalApp.dll
 /target:exe
 /warnaserror-
 /utf8output
 /deterministic+
-/langversion:14.0
-/features:use-roslyn-tokenizer=true
+/langversion:12.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
 fun.cs
 more.cs
 noilym.cs
-obj/Debug/net10.0/
- .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+obj/Debug/net8.0/
+ .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
  MinimalApp.AssemblyInfo.cs
  MinimalApp.GlobalUsings.g.cs
 Program.cs
@@ -70,7 +60,7 @@ reasons.cs
 relationship.cs
 
 [metadataReferences]
-../../../../../Program Files/dotnet/packs/Microsoft.AspNetCore.App.Ref/10.0.3/ref/net10.0/
+../../../../../Program Files/dotnet/packs/Microsoft.AspNetCore.App.Ref/8.0.24/ref/net8.0/
  Microsoft.AspNetCore.Antiforgery.dll
  Microsoft.AspNetCore.Authentication.Abstractions.dll
  Microsoft.AspNetCore.Authentication.BearerToken.dll
@@ -154,7 +144,6 @@ relationship.cs
  Microsoft.AspNetCore.SignalR.Core.dll
  Microsoft.AspNetCore.SignalR.dll
  Microsoft.AspNetCore.SignalR.Protocols.Json.dll
- Microsoft.AspNetCore.StaticAssets.dll
  Microsoft.AspNetCore.StaticFiles.dll
  Microsoft.AspNetCore.WebSockets.dll
  Microsoft.AspNetCore.WebUtilities.dll
@@ -203,15 +192,14 @@ relationship.cs
  Microsoft.Extensions.Options.DataAnnotations.dll
  Microsoft.Extensions.Options.dll
  Microsoft.Extensions.Primitives.dll
- Microsoft.Extensions.Validation.dll
  Microsoft.Extensions.WebEncoders.dll
  Microsoft.JSInterop.dll
  Microsoft.Net.Http.Headers.dll
  System.Diagnostics.EventLog.dll
- System.Formats.Cbor.dll
+ System.IO.Pipelines.dll
  System.Security.Cryptography.Xml.dll
  System.Threading.RateLimiting.dll
-../../../../../Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.3/ref/net10.0/
+../../../../../Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.24/ref/net8.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
  Microsoft.VisualBasic.dll
@@ -269,11 +257,9 @@ relationship.cs
  System.IO.FileSystem.Watcher.dll
  System.IO.IsolatedStorage.dll
  System.IO.MemoryMappedFiles.dll
- System.IO.Pipelines.dll
  System.IO.Pipes.AccessControl.dll
  System.IO.Pipes.dll
  System.IO.UnmanagedMemoryStream.dll
- System.Linq.AsyncEnumerable.dll
  System.Linq.dll
  System.Linq.Expressions.dll
  System.Linq.Parallel.dll
@@ -291,7 +277,6 @@ relationship.cs
  System.Net.Quic.dll
  System.Net.Requests.dll
  System.Net.Security.dll
- System.Net.ServerSentEvents.dll
  System.Net.ServicePoint.dll
  System.Net.Sockets.dll
  System.Net.WebClient.dll
@@ -352,7 +337,6 @@ relationship.cs
  System.Text.Encodings.Web.dll
  System.Text.Json.dll
  System.Text.RegularExpressions.dll
- System.Threading.AccessControl.dll
  System.Threading.Channels.dll
  System.Threading.dll
  System.Threading.Overlapped.dll
@@ -381,15 +365,14 @@ relationship.cs
  WindowsBase.dll
 
 [analyzerReferences]
-../../../../../Program Files/dotnet/packs/Microsoft.AspNetCore.App.Ref/10.0.3/analyzers/dotnet/cs/
+../../../../../Program Files/dotnet/packs/Microsoft.AspNetCore.App.Ref/8.0.24/analyzers/dotnet/cs/
  Microsoft.AspNetCore.App.Analyzers.dll
  Microsoft.AspNetCore.App.CodeFixes.dll
- Microsoft.AspNetCore.App.SourceGenerators.dll
  Microsoft.AspNetCore.Components.Analyzers.dll
+../../../../../Program Files/dotnet/packs/Microsoft.AspNetCore.App.Ref/8.0.24/analyzers/dotnet/roslyn4.4/cs/
  Microsoft.Extensions.Logging.Generators.dll
  Microsoft.Extensions.Options.SourceGeneration.dll
- Microsoft.Extensions.Validation.ValidationsGenerator.dll
-../../../../../Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/10.0.3/analyzers/dotnet/cs/
+../../../../../Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.24/analyzers/dotnet/cs/
  Microsoft.Interop.ComInterfaceGenerator.dll
  Microsoft.Interop.JavaScript.JSImportGenerator.dll
  Microsoft.Interop.LibraryImportGenerator.dll
@@ -408,5 +391,5 @@ relationship.cs
  Microsoft.CodeAnalysis.NetAnalyzers.dll
 
 [analyzerConfigFiles]
-../../../../../Program Files/dotnet/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_10_default.globalconfig
-obj/Debug/net10.0/MinimalApp.GeneratedMSBuildEditorConfig.editorconfig
+../../../../../Program Files/dotnet/sdk/10.0.103/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_8_default.globalconfig
+obj/Debug/net8.0/MinimalApp.GeneratedMSBuildEditorConfig.editorconfig
