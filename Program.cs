@@ -7,261 +7,467 @@ app.MapGet("/", (HttpContext ctx) =>
     return Task.CompletedTask;
 });
 
-                
 app.UseStaticFiles(new Microsoft.AspNetCore.Builder.StaticFileOptions
 {
     FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(app.Environment.ContentRootPath),
     RequestPath = ""
 });
 
-
-
-
 app.MapGet("/Yas", () =>
 {
     return Results.Content("""
     <html>
     <head>
+    <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
         <style>
-            * {
-                box-sizing: border-box;
+            :root {
+                --rose: #e8406a;
+                --rose-light: #ff7096;
+                --rose-dark: #9e1a3a;
+                --gold: #d4a843;
+                --gold-light: #f0c96a;
+                --cream: #fff5f7;
+                --blush: #fde8ef;
+                --deep: #1a0610;
+                --wine: #4a0e20;
+                --soft-pink: #f9c4d4;
             }
+            * { box-sizing: border-box; margin: 0; padding: 0; }
+
             body {
                 min-height: 100vh;
-                margin: 0;
-                padding: 0;
-                font-family: 'Inter', 'Segoe UI', sans-serif;
-                color: #f7e7ff;
-                background: radial-gradient(circle at 20% 15%, rgba(255, 145, 196, 0.18), transparent 20%),
-                            radial-gradient(circle at 85% 20%, rgba(255, 95, 145, 0.24), transparent 18%),
-                            linear-gradient(135deg, #30042d 0%, #461362 45%, #a11d7d 100%);
+                font-family: 'Cormorant Garamond', serif;
+                background: var(--deep);
                 overflow-x: hidden;
+                cursor: none;
             }
-            body::before {
-                content: '';
+
+            /* Custom cursor */
+            .cursor {
+                width: 20px; height: 20px;
+                background: var(--rose-light);
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9999;
+                transform: translate(-50%, -50%);
+                transition: transform 0.1s ease, width 0.2s, height 0.2s, opacity 0.2s;
+                mix-blend-mode: screen;
+            }
+            .cursor-ring {
+                width: 44px; height: 44px;
+                border: 1px solid rgba(232,64,106,0.5);
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9998;
+                transform: translate(-50%, -50%);
+                transition: transform 0.25s ease, width 0.3s, height 0.3s;
+            }
+
+            /* Floating petals */
+            .petal {
+                position: fixed;
+                pointer-events: none;
+                font-size: 1.2rem;
+                animation: petalFall linear infinite;
+                z-index: 1;
+                opacity: 0.6;
+            }
+            @keyframes petalFall {
+                0% { transform: translateY(-60px) rotate(0deg) translateX(0); opacity: 0.7; }
+                50% { transform: translateY(50vh) rotate(180deg) translateX(40px); opacity: 0.5; }
+                100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity: 0; }
+            }
+
+            /* Background canvas */
+            .bg-canvas {
                 position: fixed;
                 inset: 0;
-                background-image: radial-gradient(circle at 15% 18%, rgba(255,255,255,0.12) 0, transparent 36%),
-                                  radial-gradient(circle at 70% 10%, rgba(255,110,190,0.18) 0, transparent 28%);
-                pointer-events: none;
+                background:
+                    radial-gradient(ellipse at 10% 20%, rgba(158, 26, 58, 0.35) 0%, transparent 50%),
+                    radial-gradient(ellipse at 90% 80%, rgba(74, 14, 32, 0.5) 0%, transparent 45%),
+                    radial-gradient(ellipse at 50% 50%, rgba(26, 6, 16, 0.9) 0%, transparent 70%),
+                    linear-gradient(160deg, #1a0610 0%, #2d0a1a 40%, #1a0610 100%);
+                z-index: 0;
             }
-            .menu {
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100vh;
-                width: 280px;
-                padding: 26px 22px;
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-                background: rgba(28, 8, 34, 0.88);
-                border-right: 1px solid rgba(255,255,255,0.08);
-                box-shadow: 12px 0 40px rgba(0,0,0,0.35);
-                backdrop-filter: blur(18px);
-            }
-            .menu .logo {
-                width: 80px;
-                height: 80px;
-                border-radius: 24px;
-                background: linear-gradient(135deg, rgba(132, 22, 91, 0.92), rgba(212, 60, 147, 0.9));
-                box-shadow: 0 18px 40px rgba(207, 53, 135, 0.34);
-                margin-bottom: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                overflow: hidden;
-                border: 1px solid rgba(255,255,255,0.15);
-            }
-            .menu .logo img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                background: transparent;
-            }
-            .menu h2 {
-                margin: 0;
-                color: #ff8bc1;
-                font-size: 1.08rem;
-                letter-spacing: 0.14em;
-                text-transform: uppercase;
-            }
-            .menu small {
-                color: #e4c9eb;
-                line-height: 1.5;
-                font-size: 0.95rem;
-            }
-            .menu button {
-                width: 100%;
-                padding: 14px 16px;
-                border-radius: 999px;
-                border: 1px solid rgba(255,255,255,0.12);
-                background: rgba(255, 255, 255, 0.08);
-                color: #ffd6ff;
-                font-weight: 600;
-                cursor: pointer;
-                transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
-                box-shadow: 0 10px 22px rgba(225, 50, 135, 0.16);
-            }
-            .menu button:hover {
-                transform: translateY(-2px);
-                background: rgba(255, 255, 255, 0.14);
-                border-color: rgba(255,255,255,0.18);
-            }
-            .content {
-                margin-left: 320px;
-                min-height: 100vh;
-                padding: 60px 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .hero-card {
-                width: min(900px, 100%);
-                padding: 52px 56px;
-                border-radius: 40px;
-                background: rgba(30, 9, 43, 0.76);
-                border: 1px solid rgba(255,255,255,0.12);
-                box-shadow: 0 30px 80px rgba(0, 0, 0, 0.38);
-                backdrop-filter: blur(22px);
-                text-align: center;
-                position: relative;
-                overflow: hidden;
-            }
-            .hero-card::before {
+            .bg-canvas::after {
                 content: '';
                 position: absolute;
                 inset: 0;
-                border-radius: 40px;
-                background: linear-gradient(135deg, rgba(255, 115, 185, 0.12), transparent 55%);
-                pointer-events: none;
+                background-image: 
+                    radial-gradient(1px 1px at 20% 30%, rgba(255,200,200,0.4) 0%, transparent 100%),
+                    radial-gradient(1px 1px at 60% 70%, rgba(255,180,180,0.3) 0%, transparent 100%),
+                    radial-gradient(1px 1px at 80% 20%, rgba(255,220,220,0.3) 0%, transparent 100%);
+                animation: twinkle 4s ease-in-out infinite alternate;
             }
-            .hero-card > * {
+            @keyframes twinkle {
+                0% { opacity: 0.4; }
+                100% { opacity: 1; }
+            }
+
+            /* Sidebar */
+            .sidebar {
+                position: fixed;
+                top: 0; left: 0;
+                height: 100vh;
+                width: 300px;
+                z-index: 100;
+                display: flex;
+                flex-direction: column;
+                padding: 40px 28px;
+                background: linear-gradient(180deg, rgba(26,6,16,0.95) 0%, rgba(74,14,32,0.85) 100%);
+                border-right: 1px solid rgba(212,168,67,0.2);
+                backdrop-filter: blur(20px);
+            }
+            .sidebar::after {
+                content: '';
+                position: absolute;
+                top: 0; right: 0;
+                width: 1px; height: 100%;
+                background: linear-gradient(180deg, transparent, rgba(212,168,67,0.6), rgba(232,64,106,0.4), transparent);
+                animation: shimmerLine 3s ease-in-out infinite;
+            }
+            @keyframes shimmerLine {
+                0%, 100% { opacity: 0.4; }
+                50% { opacity: 1; }
+            }
+
+            .logo-wrap {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 32px;
+            }
+            .logo-frame {
+            width: 96px; 
+            height: 96px;
+            border-radius: 50%;
+            border: 2px solid var(--gold); /* This keeps a thin gold circle */
+            padding: 3px;
+            position: relative;
+            background: transparent; /* This removes the rainbow colors */
+            }
+            @keyframes rotateBorder {
+            from { filter: hue-rotate(0deg); }
+            to { filter: hue-rotate(360deg); }
+            }
+            .logo-frame img {
+                width: 100%; height: 100%;
+                border-radius: 50%;
+                object-fit: cover;
+                display: block;
+            }
+            .logo-name {
+                font-family: 'Dancing Script', cursive;
+                font-size: 1.6rem;
+                color: var(--gold-light);
+                margin-top: 12px;
+                text-align: center;
+                letter-spacing: 0.05em;
+                text-shadow: 0 0 20px rgba(212,168,67,0.5);
+            }
+
+            .divider {
+                width: 60%;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, rgba(212,168,67,0.5), transparent);
+                margin: 8px auto 24px;
+            }
+
+            .nav-label {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 0.75rem;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                color: rgba(212,168,67,0.6);
+                margin-bottom: 14px;
+                text-align: center;
+            }
+
+            .nav-btn {
+                width: 100%;
+                padding: 14px 20px;
+                margin-bottom: 10px;
+                border-radius: 4px;
+                border: 1px solid rgba(212,168,67,0.15);
+                background: rgba(255,255,255,0.03);
+                color: var(--soft-pink);
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 1.1rem;
+                font-style: italic;
+                cursor: pointer;
+                transition: all 0.35s ease;
                 position: relative;
+                overflow: hidden;
+                text-align: left;
+                letter-spacing: 0.03em;
             }
+            .nav-btn::before {
+                content: '';
+                position: absolute;
+                left: 0; top: 0; bottom: 0;
+                width: 3px;
+                background: linear-gradient(180deg, var(--gold), var(--rose));
+                transform: scaleY(0);
+                transform-origin: center;
+                transition: transform 0.3s ease;
+            }
+            .nav-btn::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, rgba(232,64,106,0.08), transparent);
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .nav-btn:hover {
+                border-color: rgba(212,168,67,0.4);
+                color: var(--cream);
+                padding-left: 26px;
+                transform: translateX(4px);
+            }
+            .nav-btn:hover::before { transform: scaleY(1); }
+            .nav-btn:hover::after { opacity: 1; }
+
+            .nav-icon { margin-right: 10px; font-size: 0.9rem; }
+
+            /* Main content */
+            .main {
+                margin-left: 300px;
+                min-height: 100vh;
+                position: relative;
+                z-index: 10;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 60px 60px 60px 80px;
+            }
+
+            .hero {
+                max-width: 780px;
+                width: 100%;
+            }
+
+            .hero-eyebrow {
+                font-family: 'Dancing Script', cursive;
+                font-size: 1.4rem;
+                color: var(--gold-light);
+                letter-spacing: 0.1em;
+                margin-bottom: 16px;
+                opacity: 0;
+                animation: slideUp 0.8s ease 0.2s forwards;
+            }
+
             .hero-title {
-                margin: 0;
-                font-size: clamp(3.4rem, 5vw, 5.6rem);
-                letter-spacing: -0.05em;
-                line-height: 0.92;
-                color: #ffd0f8;
-                text-shadow: 0 20px 55px rgba(116, 15, 72, 0.4);
+                font-family: 'Playfair Display', serif;
+                font-size: clamp(3.5rem, 6vw, 6.5rem);
+                font-weight: 900;
+                line-height: 1;
+                letter-spacing: -0.02em;
+                margin-bottom: 8px;
+                color: var(--cream);
+                opacity: 0;
+                animation: slideUp 0.9s ease 0.4s forwards;
             }
-            .hero-title span {
-                display: inline-block;
-                animation: wave 1.4s ease-in-out infinite;
-                animation-delay: calc(var(--i) * 0.08s);
+            .hero-title em {
+                font-style: italic;
+                color: var(--rose-light);
+                display: block;
+                font-size: 0.65em;
+                font-weight: 400;
+                letter-spacing: 0.05em;
+                text-shadow: 0 0 40px rgba(255, 112, 150, 0.5);
             }
-            .hero-title span.space {
-                animation: none;
+
+            .title-underline {
+                width: 0;
+                height: 2px;
+                background: linear-gradient(90deg, var(--rose), var(--gold));
+                margin-bottom: 32px;
+                animation: expandLine 1s ease 1s forwards;
+                border-radius: 2px;
             }
-            .hero-text {
-                margin: 28px auto 0;
-                max-width: 760px;
-                font-size: 1.2rem;
-                line-height: 1.8;
-                color: rgba(255,210,245,0.93);
+            @keyframes expandLine {
+                to { width: 200px; }
             }
-            .hero-text strong {
-                color: #ffe1ff;
+
+            .hero-body {
+                font-size: 1.3rem;
+                line-height: 1.9;
+                color: rgba(255, 220, 230, 0.85);
+                font-weight: 300;
+                max-width: 560px;
+                opacity: 0;
+                animation: slideUp 0.9s ease 0.7s forwards;
             }
-            .hero-badge {
+            .hero-body strong {
+                color: var(--soft-pink);
+                font-weight: 600;
+            }
+
+            .badge {
                 display: inline-flex;
-                margin-top: 18px;
-                padding: 12px 20px;
-                border-radius: 999px;
-                background: rgba(255, 255, 255, 0.08);
-                color: #ffb2e7;
-                font-weight: 700;
-                letter-spacing: 0.04em;
+                align-items: center;
+                gap: 8px;
+                margin-top: 28px;
+                padding: 10px 20px;
+                border: 1px solid rgba(212,168,67,0.3);
+                border-radius: 2px;
+                background: rgba(212,168,67,0.05);
+                color: var(--gold-light);
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 0.9rem;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                opacity: 0;
+                animation: slideUp 0.9s ease 1s forwards;
             }
-            .hero-link {
-                margin-top: 14px;
-                color: #ffdce8;
-                font-size: 0.98rem;
+
+            .floating-hearts {
+                position: absolute;
+                right: 60px;
+                top: 50%;
+                transform: translateY(-50%);
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+                opacity: 0;
+                animation: fadeIn 1s ease 1.3s forwards;
             }
-            .hero-link a {
-                color: #ffe4ff;
-                text-decoration: none;
-                border-bottom: 1px dashed rgba(255,255,255,0.35);
+            .fheart {
+                font-size: 1.8rem;
+                animation: floatHeart 3s ease-in-out infinite;
+                filter: drop-shadow(0 0 8px rgba(232,64,106,0.6));
             }
-            .hero-link a:hover {
-                color: #ffffff;
-                border-bottom-color: rgba(255,255,255,0.7);
+            .fheart:nth-child(2) { animation-delay: 0.5s; font-size: 1.3rem; }
+            .fheart:nth-child(3) { animation-delay: 1s; font-size: 2.2rem; }
+            .fheart:nth-child(4) { animation-delay: 1.5s; font-size: 1rem; }
+            @keyframes floatHeart {
+                0%, 100% { transform: translateY(0) rotate(-5deg); }
+                50% { transform: translateY(-20px) rotate(5deg); }
             }
-            @keyframes wave {
-                0%, 100% {
-                    transform: translateY(0);
-                }
-                50% {
-                    transform: translateY(-18px);
-                }
+
+            @keyframes slideUp {
+                from { opacity: 0; transform: translateY(30px); }
+                to { opacity: 1; transform: translateY(0); }
             }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
             @media (max-width: 900px) {
-                .menu {
+                .sidebar {
                     position: relative;
                     width: 100%;
                     height: auto;
                     border-right: none;
-                    box-shadow: none;
-                    backdrop-filter: none;
+                    border-bottom: 1px solid rgba(212,168,67,0.2);
+                    padding: 28px 20px;
                 }
-                .content {
+                .main {
                     margin-left: 0;
-                    padding: 30px 20px 50px;
+                    padding: 40px 24px;
                 }
+                .floating-hearts { display: none; }
             }
         </style>
     </head>
     <body>
-        <div class="menu">
-            <div class="logo">
-                <img id="menu-logo" src="/yasmin-Photoroom.png" alt="Yasmin logo">
+        <div class="cursor" id="cursor"></div>
+        <div class="cursor-ring" id="cursorRing"></div>
+        <div class="bg-canvas"></div>
+
+        <!-- Petals -->
+        <div id="petals"></div>
+
+        <div class="sidebar">
+            <div class="logo-wrap">
+                <div class="logo-frame">
+                    <img src="/yasmin-Photoroom.png" alt="Yasmin">
+                </div>
+                <div class="logo-name">Yasmin + Orian omgg</div>
             </div>
-            <h2>Menu</h2>
-            <small>Some Cool stuff!</small>
-            <button type="button" onclick="location.href='/reasons'">Reasons I Love You</button>
-            <button type="button" onclick="location.href='/relationship'">Relationship Counter</button>
-            <button type="button" onclick="location.href='/fun'">Just For Fun</button>
-            <button type="button" onclick="location.href='/more'">I Love You More!</button>
+            <div class="divider"></div>
+            <div class="nav-label">Chickenron</div>
+            <button class="nav-btn" onclick="location.href='/reasons'"><span class="nav-icon">✦</span> Reasons I Love You</button>
+            <button class="nav-btn" onclick="location.href='/relationship'"><span class="nav-icon">♡</span> Our Time Together</button>
+            <button class="nav-btn" onclick="location.href='/fun'"><span class="nav-icon">✧</span> Just For Fun</button>
+            <button class="nav-btn" onclick="location.href='/more'"><span class="nav-icon">❧</span> I Love You More!</button>
         </div>
-        <div class="content">
-            <div class="hero-card">
-                <h1 class="hero-title" id="wave-title">I Love You Yasmin</h1>
-                <div class="hero-badge">Made By Orian</div>
-                <p class="hero-text">You Are The Best! </p>
+
+        <div class="main">
+            <div class="hero">
+                <div class="hero-eyebrow">— for my beloved —</div>
+                <h1 class="hero-title">
+                    I Love You
+                    <em>Yasmin</em>
+                </h1>
+                <div class="title-underline"></div>
+                <p class="hero-body">
+                    I built this <strong>entire world</strong> just for you.<br>
+                    Every pixel placed with love.<br>
+                    Every line written thinking of you.
+                </p>
+                <div class="badge">✦ &nbsp; Made with love by Orian &nbsp; ✦</div>
+            </div>
+            <div class="floating-hearts">
+                <span class="fheart">♥</span>
+                <span class="fheart">♡</span>
+                <span class="fheart">♥</span>
+                <span class="fheart">♡</span>
             </div>
         </div>
+
         <script>
-            const title = document.getElementById('wave-title');
-            const text = title.textContent.trim();
-            title.innerHTML = [...text].map((char, idx) => {
-                if (char === ' ') {
-                    return `<span class="space" style="--i:${idx}">&nbsp;</span>`;
-                }
-                return `<span style="--i:${idx}">${char}</span>`;
-            }).join('');
+            // Custom cursor
+            const cursor = document.getElementById('cursor');
+            const ring = document.getElementById('cursorRing');
+            let mx = 0, my = 0, rx = 0, ry = 0;
+            document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+            function animateCursor() {
+                cursor.style.left = mx + 'px';
+                cursor.style.top = my + 'px';
+                rx += (mx - rx) * 0.12;
+                ry += (my - ry) * 0.12;
+                ring.style.left = rx + 'px';
+                ring.style.top = ry + 'px';
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            // Petals
+            const petalContainer = document.getElementById('petals');
+            const petalChars = ['🌸','❤️','🌹'];
+            function spawnPetal() {
+                const p = document.createElement('div');
+                p.className = 'petal';
+                p.textContent = petalChars[Math.floor(Math.random() * petalChars.length)];
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.fontSize = (0.8 + Math.random() * 1.4) + 'rem';
+                p.style.animationDuration = (6 + Math.random() * 8) + 's';
+                p.style.animationDelay = (Math.random() * 4) + 's';
+                petalContainer.appendChild(p);
+                setTimeout(() => p.remove(), 15000);
+            }
+            setInterval(spawnPetal, 800);
+            for (let i = 0; i < 8; i++) setTimeout(spawnPetal, i * 400);
         </script>
     </body>
     </html>
-    """, "text/html");
+    """, "text/html", System.Text.Encoding.UTF8);
 });
 
 app.MapReasonsPage();
-
 app.MapRelationshipPage();
-
 app.MapFunPage();
-
 app.MapMorePage();
-
 app.MapNguPage();
-
 app.MapBlehhPage();
-
 app.MapHelloPage();
-
 app.MapNoIlymPage();
+
 var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 app.Run($"http://0.0.0.0:{port}");
-

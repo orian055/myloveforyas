@@ -1,105 +1,285 @@
 <html>
 <head>
+<meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; }
+        :root {
+            --rose: #e8406a;
+            --rose-light: #ff7096;
+            --gold: #d4a843;
+            --gold-light: #f0c96a;
+            --cream: #fff5f7;
+            --deep: #1a0610;
+            --soft-pink: #f9c4d4;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-            color: #f7e7ff;
-            background: linear-gradient(135deg, #30042d 0%, #461362 45%, #a11d7d 100%);
+            font-family: 'Cormorant Garamond', serif;
+            background:
+                radial-gradient(ellipse at 15% 25%, rgba(158,26,58,0.28) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 75%, rgba(74,14,32,0.35) 0%, transparent 45%),
+                linear-gradient(160deg, #1a0610 0%, #2d0a1a 40%, #1a0610 100%);
+            color: var(--cream);
             overflow-x: hidden;
+            cursor: default;
         }
-        .page-container {
+
+        /* Petals */
+        .petal {
+            position: fixed; pointer-events: none;
+            animation: petalFall linear infinite;
+            z-index: 0; opacity: 0.45; font-size: 1rem;
+        }
+        @keyframes petalFall {
+            0% { transform: translateY(-40px) rotate(0deg); opacity: 0.5; }
+            100% { transform: translateY(105vh) rotate(540deg) translateX(25px); opacity: 0; }
+        }
+
+        .page-wrap {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px;
-        }
-        .card {
-            width: min(720px, 100%);
-            padding: 44px 44px 32px;
-            border-radius: 32px;
-            background: rgba(30, 9, 43, 0.88);
-            border: 1px solid rgba(255,255,255,0.12);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.38);
-            text-align: center;
-            color: #ffd0f8;
-        }
-        h1 { margin-top: 0; font-size: clamp(3rem, 5vw, 4.4rem); }
-        p { font-size: 1.1rem; line-height: 1.8; color: rgba(255,210,245,0.94); }
-        .slider-container {
+            padding: 48px 24px;
             position: relative;
-            max-width: 620px;
-            margin: 28px auto 0;
-            height: 160px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 20px;
+            z-index: 1;
+        }
+
+        .card {
+            width: min(780px, 100%);
+            padding: 60px 56px 48px;
+            border-radius: 4px;
+            background: rgba(22, 5, 14, 0.88);
+            border: 1px solid rgba(212,168,67,0.2);
+            box-shadow: 0 50px 120px rgba(0,0,0,0.6), inset 0 1px 0 rgba(212,168,67,0.12);
+            backdrop-filter: blur(28px);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: cardIn 0.8s ease forwards;
+        }
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--rose-light), var(--gold), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer {
+            from { background-position: 200% 0; }
+            to { background-position: -200% 0; }
+        }
+        .card::after {
+            content: '♡';
+            position: absolute;
+            bottom: 20px; right: 28px;
+            font-size: 8rem;
+            color: rgba(232,64,106,0.04);
+            pointer-events: none;
+            font-family: serif;
+        }
+
+        .eyebrow {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            color: var(--gold-light);
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: slideUp 0.7s ease 0.2s forwards;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.6rem, 5vw, 4rem);
+            font-weight: 700;
+            color: var(--cream);
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+            opacity: 0;
+            animation: slideUp 0.7s ease 0.35s forwards;
+        }
+        h1 em { font-style: italic; color: var(--rose-light); }
+
+        .gold-line {
+            width: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 18px auto;
+            animation: expandLine 1s ease 0.8s forwards;
+        }
+        @keyframes expandLine { to { width: 120px; } }
+
+        .sub {
+            font-size: 1.1rem;
+            color: rgba(249,196,212,0.75);
+            font-style: italic;
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: slideUp 0.7s ease 0.5s forwards;
+        }
+
+        /* Reason display */
+        .reason-stage {
+            position: relative;
+            margin: 0 auto 24px;
+            max-width: 580px;
+            min-height: 140px;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(212,168,67,0.12);
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 28px 32px;
             overflow: hidden;
+            opacity: 0;
+            animation: slideUp 0.7s ease 0.65s forwards;
+        }
+        .reason-stage::before {
+            content: '"';
+            position: absolute;
+            top: -10px; left: 16px;
+            font-family: 'Playfair Display', serif;
+            font-size: 6rem;
+            color: rgba(212,168,67,0.1);
+            line-height: 1;
+            pointer-events: none;
         }
         .reason-text {
-            text-align: center;
-            font-size: 1.15rem;
-            color: rgba(255,210,245,0.94);
-            min-height: 100px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--soft-pink);
+            line-height: 1.7;
+            letter-spacing: 0.01em;
+            position: relative;
+            z-index: 1;
+        }
+        .reason-text.fade-out { animation: fadeOut 0.25s ease forwards; }
+        .reason-text.fade-in { animation: fadeIn 0.35s ease forwards; }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateX(-12px); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(12px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Nav */
+        .slider-nav {
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 0.4s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .slider-nav {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 16px;
+            gap: 24px;
+            margin-top: 8px;
+            opacity: 0;
+            animation: slideUp 0.7s ease 0.8s forwards;
         }
         .nav-btn {
-            width: 44px;
-            height: 44px;
+            width: 50px; height: 50px;
             border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.18);
-            background: rgba(255,255,255,0.08);
-            color: #ffd6ff;
+            border: 1px solid rgba(212,168,67,0.3);
+            background: rgba(212,168,67,0.06);
+            color: var(--gold-light);
+            font-size: 1.1rem;
             cursor: pointer;
-            font-size: 18px;
             transition: all 0.25s ease;
+            display: flex; align-items: center; justify-content: center;
         }
         .nav-btn:hover {
-            background: rgba(255,255,255,0.14);
-            transform: scale(1.08);
+            background: rgba(212,168,67,0.14);
+            border-color: var(--gold);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(212,168,67,0.2);
         }
-        .counter { font-size: 0.9rem; color: rgba(255,210,245,0.7); margin-top: 12px; }
-        .back-btn { margin-top: 28px; padding: 14px 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.08); color: #ffd6ff; cursor: pointer; }
+        .counter {
+            font-size: 0.85rem;
+            color: rgba(212,168,67,0.5);
+            letter-spacing: 0.12em;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            width: 100%;
+            height: 2px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 2px;
+            margin: 20px 0 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--rose), var(--gold));
+            border-radius: 2px;
+            transition: width 0.4s ease;
+        }
+
+        .back-btn {
+            margin-top: 36px;
+            padding: 14px 36px;
+            border-radius: 2px;
+            border: 1px solid rgba(212,168,67,0.3);
+            background: transparent;
+            color: var(--gold-light);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-style: italic;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: slideUp 0.7s ease 1s forwards;
+        }
+        .back-btn:hover {
+            border-color: var(--gold);
+            color: var(--cream);
+            background: rgba(212,168,67,0.08);
+            transform: translateY(-2px);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <div class="page-container">
+    <div id="petals"></div>
+
+    <div class="page-wrap">
         <div class="card">
-            <h1>Reasons I Love You</h1>
-            <p>I Say I Love You 10000 Times A Day</p>
-            <p>There Are So Many Reasons</p>
-            <div class="slider-container">
+            <div class="eyebrow">— from the heart —</div>
+            <h1>Reasons I <em>Love</em> You</h1>
+            <div class="gold-line"></div>
+            <p class="sub">Every single one is true.</p>
+
+            <div class="reason-stage">
                 <div class="reason-text" id="reasonText">Your laugh brightens every day.</div>
             </div>
-            <div class="slider-nav">
-                <button class="nav-btn" onclick="previousReason()"><</button>
-                <button class="nav-btn" onclick="nextReason()">></button>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 1%"></div>
             </div>
-            <div class="counter" id="counter">1 / 150</div>
-            <button class="back-btn" onclick="location.href='/Yas'">Back</button>
+
+            <div class="slider-nav">
+                <button class="nav-btn" onclick="previousReason()">←</button>
+                <span class="counter" id="counter">1 / 150</span>
+                <button class="nav-btn" onclick="nextReason()">→</button>
+            </div>
+
+            <br>
+            <button class="back-btn" onclick="location.href='/Yas'">← return home</button>
         </div>
     </div>
+
     <script>
         const reasons = [
             "You actually care.",
@@ -110,63 +290,63 @@
             "Youre humble (even tho you got crazy skills).",
             "Youre a nice person.",
             "You are prettyyyyyy.",
-            "Your humor is cool!.",
+            "Your humor is cool!",
             "Your HOT. Like damn.",
-            "You make me cool things!.",
+            "You make me cool things!",
             "Hugging you feels like heaven.",
-            "You always smell so good!.",
+            "You always smell so good!",
             "You are very talented.",
             "Your voice.",
             "Your eyes are the most beautiful thing ive ever seen.",
             "Your laugh is cutee.",
             "You are smol!",
-            "Youre going trough so much and you still smile!.",
+            "Youre going through so much and you still smile!",
             "Youre addicting.",
             "You. (Just you.)",
             "Youre PERFECT.",
             "You have cool stories!",
             "You listen to my nonsense.",
-            "You are fun!.",
-            "You taste good!.",
+            "You are fun!",
+            "You taste good!",
             "Youre just CUTE!",
             "You are a good mom to tayra.",
-            "I KNOW HOW TO WRITE TAYRA IN ENGLISH BE PROUD OF ME!.",
+            "I KNOW HOW TO WRITE TAYRA IN ENGLISH BE PROUD OF ME!",
             "You make me want to be better for you.",
             "You make me happy.",
             "The way you look at me.",
             "Youre literally a princess!",
-            "You Have a Beautiful accent (sorry).",
-            "You make me feel like a kid again!.",
-            "That one time you walked into my class\n                         and put your hand on my head.",
+            "You have a Beautiful accent (sorry).",
+            "You make me feel like a kid again!",
+            "That one time you walked into my class and put your hand on my head.",
             "Your hugs.",
             "The way you smoke.",
             "Your BELLY.",
-            "The way you make me laugh!.",
-            "Your confidence (sometimes!).",
+            "The way you make me laugh!",
+            "Your confidence (sometimes!)",
             "Your kisses.",
             "Your HAIR.",
-            "I Can Be Myself Around You.",
-            "The Intense feelings you give me.",
-            "The Random Pics you send me (NEVER STOP).",
+            "I can be myself around you.",
+            "The intense feelings you give me.",
+            "The random pics you send me (NEVER STOP).",
             "Your ability to backflip.",
             "The way you comfort me without words.",
             "Your vibe.",
             "YOU ARE SMOL.",
-            "Your ability to play acoustic guitar (WITHOUT A PICK!!!).",
+            "Your ability to play acoustic guitar (WITHOUT A PICK!!!)",
             "The way you make my heart race just by existing.",
             "SMOL PRINCESS.",
-            "How youre the shy and careless AT THE SAME TIME.",
+            "How youre shy and carefree AT THE SAME TIME.",
             "YOUR SMOL HANDS.",
             "The way you shove stuff in my mouth (DONT STOPPPPP).",
-            "YOUR EYESS OMGGGGGGGG.",
+            "YOUR EYES OMGGGGGGGG.",
             "How you hit me.",
-            "Your soooooo beautifulllll!!!!!!!!.",
-            "DID I MENTION YOURE SMOL?!.",
+            "Youre sooooo beautifulllll!!!!!!!!!",
+            "DID I MENTION YOURE SMOL?!",
             "Your pijamas are sooo cuteeeeeeeeeeee.",
             "How you pronounce words (its adorable).",
             "Youre strong (but smol).",
-            "The way you say my name!.",
-            "Youre tounge.",
+            "The way you say my name!",
+            "Youre tongue.",
             "Your ability to be angry then calm down instantly.",
             "YOUR HUGSSSSS AHHHHH.",
             "The fact you say im a small cat (im a grown ass man).",
@@ -175,10 +355,10 @@
             "yeah you.",
             "The way i just meet you in random places.",
             "Your smalllllllll!!!!",
-            "'btw ily''.",
+            "'btw ily'",
             "Your awesome minecraft builds.",
-            "The way you talkk is so cute im just feoithhgahga.",
-            "Your silly!.",
+            "The way you talk is so cute im just feoithhgahga.",
+            "Your silly!",
             "Youre pretty (and small).",
             "Your depth and complexity.",
             "I DO INFACT tell you now."
@@ -186,25 +366,56 @@
 
         let currentIndex = 0;
 
-        function showReason(index) {
+        function showReason(index, dir = 1) {
             const textEl = document.getElementById('reasonText');
             const counterEl = document.getElementById('counter');
-            
-            textEl.textContent = reasons[index];
-            counterEl.textContent = (index + 1) + ' / ' + reasons.length;
+            const fill = document.getElementById('progressFill');
+
+            textEl.classList.add('fade-out');
+            setTimeout(() => {
+                textEl.textContent = reasons[index];
+                textEl.classList.remove('fade-out');
+                textEl.classList.add('fade-in');
+                counterEl.textContent = (index + 1) + ' / ' + reasons.length;
+                fill.style.width = ((index + 1) / reasons.length * 100) + '%';
+                setTimeout(() => textEl.classList.remove('fade-in'), 350);
+            }, 250);
         }
 
         function nextReason() {
             currentIndex = (currentIndex + 1) % reasons.length;
-            showReason(currentIndex);
+            showReason(currentIndex, 1);
         }
 
         function previousReason() {
             currentIndex = (currentIndex - 1 + reasons.length) % reasons.length;
-            showReason(currentIndex);
+            showReason(currentIndex, -1);
         }
 
+        // keyboard nav
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight') nextReason();
+            if (e.key === 'ArrowLeft') previousReason();
+        });
+
         showReason(0);
+
+        // Petals
+        const petalContainer = document.getElementById('petals');
+        const petals = ['🌸','♡','❤️','✿','❧'];
+        function spawnPetal() {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            p.textContent = petals[Math.floor(Math.random() * petals.length)];
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.fontSize = (0.7 + Math.random() * 1.1) + 'rem';
+            p.style.animationDuration = (7 + Math.random() * 9) + 's';
+            p.style.animationDelay = (Math.random() * 3) + 's';
+            petalContainer.appendChild(p);
+            setTimeout(() => p.remove(), 16000);
+        }
+        setInterval(spawnPetal, 1000);
+        for (let i = 0; i < 6; i++) setTimeout(spawnPetal, i * 400);
     </script>
 </body>
 </html>
