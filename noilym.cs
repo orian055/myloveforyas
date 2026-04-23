@@ -8,6 +8,7 @@ public static class NoIlymPage
             <html>
             <head>
             <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
                 <style>
                     :root {
@@ -109,6 +110,13 @@ public static class NoIlymPage
                         from { opacity: 0; transform: translateY(20px); }
                         to { opacity: 1; transform: translateY(0); }
                     }
+                    @media(max-width:480px){
+                        .card{padding:36px 20px 32px;}
+                        .btn-group{flex-direction:column;align-items:center;}
+                        .choice-btn{width:100%;max-width:280px;}
+                    }
+                    button{-webkit-tap-highlight-color:transparent;}
+
                 </style>
             </head>
             <body>

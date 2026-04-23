@@ -7,7 +7,7 @@ public static class ReasonsPage
         app.MapGet("/reasons", () =>
         {
             var html = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "reasons.html"));
-            return Results.Content(html, "text/html");
+            return Results.Content(html, "text/html", System.Text.Encoding.UTF8);
         });
     }
 }
