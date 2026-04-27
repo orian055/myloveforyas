@@ -8,6 +8,7 @@
             <html>
             <head>
             <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
                 <style>
                     :root {
@@ -120,7 +121,49 @@
                         from { opacity: 0; transform: translateY(20px); }
                         to { opacity: 1; transform: translateY(0); }
                     }
-                </style>
+                        @media (max-width: 600px) {
+                       body {
+                      padding: 12px;
+                           align-items: flex-start; /* prevents vertical squeeze */
+                        }
+
+                            .card {
+                         width: 100%;
+                          padding: 32px 18px 28px;
+                          border-radius: 6px;
+                          }
+
+                          .eyebrow {
+                          font-size: 1rem;
+                          }
+
+                              #challenge-text {
+                             font-size: 1.8rem !important;
+                         line-height: 1.25;
+                       }
+
+                          .gold-line {
+                         margin: 16px auto;
+                          }
+
+                          .btn-wrap {
+                          margin-top: 24px;
+                          }
+
+                          #challenge-btn {
+                          width: 100%;
+                          padding: 16px;
+                              font-size: 1.1rem;
+                          }
+
+                              .back-btn {
+                             width: 100%;
+                          padding: 14px;
+                        font-size: 0.9rem;
+                                 }
+                            }
+
+                  </style>
             </head>
             <body>
                 <div id="petals"></div>

@@ -8,6 +8,7 @@ public static class MorePage
             <html>
             <head>
             <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
                 <style>
                     :root {
@@ -140,6 +141,41 @@ public static class MorePage
                         from { opacity: 0; transform: translateY(20px); }
                         to { opacity: 1; transform: translateY(0); }
                     }
+                    @media (max-width: 600px) {
+                    .page-wrap {
+                    padding: 24px 12px;
+                    }
+
+                    .card {
+                    padding: 32px 20px 28px;
+                    border-radius: 8px;
+                      }
+
+                       h1 {
+                    font-size: 2rem;
+                    }
+
+                      .sub {
+                     font-size: 0.95rem;
+                     margin-bottom: 24px;
+                        }
+
+                     .btn-grid {
+                       grid-template-columns: 1fr; /* stack buttons */
+                     gap: 10px;
+                     }
+
+                     .action-btn {
+                     padding: 16px 12px;
+                     font-size: 0.95rem;
+                         }
+
+                      .back-btn {
+                      width: 100%;
+                          padding: 14px;
+                      }
+                        }
+
                 </style>
             </head>
             <body>
