@@ -27,3 +27,4 @@ C:\Users\orian\Desktop\Blazor1\MinimalApp\obj\Debug\net8.0\refint\MinimalApp.dll
 C:\Users\orian\Desktop\Blazor1\MinimalApp\obj\Debug\net8.0\MinimalApp.pdb
 C:\Users\orian\Desktop\Blazor1\MinimalApp\obj\Debug\net8.0\MinimalApp.genruntimeconfig.cache
 C:\Users\orian\Desktop\Blazor1\MinimalApp\obj\Debug\net8.0\ref\MinimalApp.dll
+C:\Users\orian\Desktop\Blazor1\MinimalApp\bin\Debug\net8.0\MinimalApp.staticwebassets.runtime.json

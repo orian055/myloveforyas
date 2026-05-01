@@ -217,7 +217,7 @@ app.MapGet("/Yas", () =>
         <div class="layout">
             <aside class="sidebar">
                 <div class="logo-wrap">
-                    <div class="logo-frame">
+                    <div class="logo-frame logo-click" id="logo-click">
                         <img src="/yasmin-Photoroom.png" alt="Yasmin">
                     </div>
                     <div class="logo-name">Yasmin + Orian omgg</div>
@@ -262,7 +262,15 @@ app.MapGet("/Yas", () =>
         </div>
 
         <script>
-            // Daily note — changes every day, gives reason to come back
+            
+            document.getElementById("logo-click").addEventListener("click", () => {
+            if (localStorage.getItem("secret_unlocked") === "true") {
+            window.location.href = "/secret.html";
+            }
+            });
+
+
+
             const dailyNotes = [
                 "You looked beautiful today, even though I didn't see you.",
                 "I thought about you 47 times today. At least.",
@@ -325,12 +333,13 @@ app.MapGet("/Yas", () =>
 
 app.MapReasonsPage();
 app.MapRelationshipPage();
-app.MapFunPage();
 app.MapMorePage();
 app.MapNguPage();
 app.MapBlehhPage();
 app.MapHelloPage();
 app.MapNoIlymPage();
+app.UseStaticFiles();
+app.MapFun();
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 app.Run($"http://0.0.0.0:{port}");
