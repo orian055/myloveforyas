@@ -1,25 +1,69 @@
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
+// CORS middleware
+app.UseCors("AllowAll");
+
+// Root redirect
 app.MapGet("/", (HttpContext ctx) =>
 {
-    ctx.Response.Redirect("/yas");
+    ctx.Response.Redirect("/Yas");
     return Task.CompletedTask;
 });
 
+// Static files - serves wwwroot and public assets
 app.UseStaticFiles(new Microsoft.AspNetCore.Builder.StaticFileOptions
 {
-    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(app.Environment.ContentRootPath),
-    RequestPath = ""
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+        Path.Combine(app.Environment.ContentRootPath, "wwwroot")),
+    RequestPath = "",
+    OnPrepareResponse = ctx =>
+    {
+        // Set cache headers for static files
+        if (ctx.File.Name.EndsWith(".css") || ctx.File.Name.EndsWith(".js") || 
+            ctx.File.Name.EndsWith(".png") || ctx.File.Name.EndsWith(".jpg"))
+        {
+            ctx.Context.Response.Headers.Add("Cache-Control", "public, max-age=31536000");
+        }
+        // Service worker shouldn't be cached aggressively
+        else if (ctx.File.Name.EndsWith("sw.js") || ctx.File.Name.EndsWith("manifest.json"))
+        {
+            ctx.Context.Response.Headers.Add("Cache-Control", "public, max-age=3600");
+        }
+    }
 });
 
+// ========== MAIN HOME PAGE ==========
 app.MapGet("/Yas", () =>
 {
     return Results.Content("""
     <html>
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no, maximum-scale=1">
+        <meta name="theme-color" content="#e8406a">
+        <meta name="description" content="A beautiful love website built with care">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-title" content="Love Portal">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="apple-itunes-app" content="app-id=0">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="icon" href="/yasmin-Photoroom.png" type="image/png">
+        <link rel="apple-touch-icon" href="/yasmin-Photoroom.png" type="image/png">
+        <link rel="mask-icon" href="/icon.svg" color="#e8406a">
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
         <style>
             :root {
@@ -60,6 +104,9 @@ app.MapGet("/Yas", () =>
                 width: 280px; flex-shrink: 0;
                 display: flex; flex-direction: column;
                 padding: 36px 24px;
+                padding-top: max(36px, env(safe-area-inset-top));
+                padding-left: max(24px, env(safe-area-inset-left));
+                padding-right: max(24px, env(safe-area-inset-right));
                 background: linear-gradient(180deg, rgba(26,6,16,0.96) 0%, rgba(74,14,32,0.88) 100%);
                 border-right: 1px solid rgba(212,168,67,0.18);
                 backdrop-filter: blur(20px);
@@ -86,8 +133,9 @@ app.MapGet("/Yas", () =>
                 font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
                 color: rgba(212,168,67,0.5); margin-bottom: 10px; text-align: center;
             }
+            .nav-grid { display: flex; flex-direction: column; gap: 8px; }
             .nav-btn {
-                width: 100%; padding: 13px 18px; margin-bottom: 8px;
+                width: 100%; padding: 13px 18px;
                 border-radius: 3px; border: 1px solid rgba(212,168,67,0.13);
                 background: rgba(255,255,255,0.03); color: var(--soft-pink);
                 font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic;
@@ -120,7 +168,11 @@ app.MapGet("/Yas", () =>
             /* ── MAIN ── */
             .main {
                 flex: 1; display: flex; align-items: center; justify-content: center;
-                padding: 60px 64px; min-height: 100vh;
+                padding: 60px 64px;
+                padding-bottom: max(60px, env(safe-area-inset-bottom));
+                padding-right: max(64px, env(safe-area-inset-right));
+                padding-left: max(64px, env(safe-area-inset-left));
+                min-height: 100vh;
             }
             .hero { max-width: 680px; width: 100%; }
             .hero-eyebrow {
@@ -160,28 +212,12 @@ app.MapGet("/Yas", () =>
             }
 
             /* floating hearts desktop only */
-            .floating-hearts {
-                position: fixed; right: 36px; top: 50%; transform: translateY(-50%);
-                display: flex; flex-direction: column; gap: 22px;
-                opacity: 0; animation: fadeIn 1s ease 1.3s forwards; z-index: 3;
-            }
-            .fheart {
-                font-size: 1.6rem; color: var(--rose-light);
-                animation: floatHeart 3s ease-in-out infinite;
-                filter: drop-shadow(0 0 8px rgba(232,64,106,0.5)); display: block;
-            }
-            .fheart:nth-child(2) { animation-delay: 0.6s; font-size: 1.1rem; }
-            .fheart:nth-child(3) { animation-delay: 1.2s; font-size: 2rem; }
-            .fheart:nth-child(4) { animation-delay: 1.8s; font-size: 0.9rem; }
-            @keyframes floatHeart {
-                0%, 100% { transform: translateY(0) rotate(-5deg); }
-                50% { transform: translateY(-18px) rotate(5deg); }
-            }
+            .floating-hearts { display: none; }
+
             @keyframes slideUp {
-                from { opacity: 0; transform: translateY(28px); }
+                from { opacity: 0; transform: translateY(20px); }
                 to { opacity: 1; transform: translateY(0); }
             }
-            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
             /* ── MOBILE ── */
             @media (max-width: 768px) {
@@ -190,7 +226,7 @@ app.MapGet("/Yas", () =>
                 .sidebar {
                     width: 100%; height: auto; position: relative;
                     border-right: none; border-bottom: 1px solid rgba(212,168,67,0.18);
-                    padding: 16px 16px 14px;
+                    padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 14px max(16px, env(safe-area-inset-left));
                 }
                 .logo-wrap { flex-direction: row; gap: 12px; margin-bottom: 12px; align-items: center; }
                 .logo-frame { width: 52px; height: 52px; flex-shrink: 0; }
@@ -201,7 +237,10 @@ app.MapGet("/Yas", () =>
                 .nav-btn { margin-bottom: 0; font-size: 0.88rem; padding: 10px 12px; text-align: center; }
                 .nav-btn:hover { padding-left: 12px; }
                 .daily-note { display: none; }
-                .main { padding: 28px 18px 48px; min-height: auto; }
+                .main {
+                    padding: 28px max(18px, env(safe-area-inset-right)) max(48px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+                    min-height: auto;
+                }
                 .hero-title { font-size: clamp(2.4rem, 10vw, 3.5rem); }
                 .hero-body { font-size: 1rem; }
                 .badge { font-size: 0.75rem; padding: 8px 14px; }
@@ -262,14 +301,18 @@ app.MapGet("/Yas", () =>
         </div>
 
         <script>
-            
-            document.getElementById("logo-click").addEventListener("click", () => {
-            if (localStorage.getItem("secret_unlocked") === "true") {
-            window.location.href = "/secret.html";
+            // Register service worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
             }
+
+            document.getElementById("logo-click").addEventListener("click", () => {
+                if (localStorage.getItem("secret_unlocked") === "true") {
+                    window.location.href = "/secret.html";
+                }
             });
-
-
 
             const dailyNotes = [
                 "You looked beautiful today, even though I didn't see you.",
@@ -331,6 +374,7 @@ app.MapGet("/Yas", () =>
     """, "text/html", System.Text.Encoding.UTF8);
 });
 
+// ========== PAGE ROUTES ==========
 app.MapReasonsPage();
 app.MapRelationshipPage();
 app.MapMorePage();
@@ -338,8 +382,8 @@ app.MapNguPage();
 app.MapBlehhPage();
 app.MapHelloPage();
 app.MapNoIlymPage();
-app.UseStaticFiles();
 app.MapFun();
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+// Run on port from environment or default (Railway uses PORT)
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 app.Run($"http://0.0.0.0:{port}");
